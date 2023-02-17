@@ -1,0 +1,3 @@
+[submodule "projects/ASR6601CB-EVAL/class_c"]
+	path = projects/ASR6601CB-EVAL/class_c
+	url = git@github.com:bjsdwl/class_c.git
