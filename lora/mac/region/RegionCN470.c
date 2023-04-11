@@ -76,6 +76,11 @@ static int8_t GetNextLowerTxDr( int8_t dr, int8_t minDr )
     else
     {
         nextLowerDr = dr - 1;
+        if(nextLowerDr==0)//liu
+        {
+            nextLowerDr=5;
+        }
+
     }
     return nextLowerDr;
 }
@@ -458,7 +463,6 @@ bool RegionCN470AdrNext( AdrNextParams_t* adrNext, int8_t* drOut, int8_t* txPowO
                     getPhy.UplinkDwellTime = adrNext->UplinkDwellTime;
                     phyParam = RegionCN470GetPhyParam( &getPhy );
                     datarate = phyParam.Value;
-
                     if( datarate == CN470_TX_MIN_DATARATE )
                     {
                         // We must set adrAckReq to false as soon as we reach the lowest datarate
@@ -705,7 +709,6 @@ uint8_t RegionCN470DlChannelReq( DlChannelReqParams_t* dlChannelReq )
 int8_t RegionCN470AlternateDr( AlternateDrParams_t* alternateDr )
 {
     int8_t datarate = 0;
-
     if( ( alternateDr->NbTrials % 48 ) == 0 )
     {
         datarate = DR_0;

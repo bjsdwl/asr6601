@@ -36,7 +36,7 @@ Maintainer: Miguel Luis ( Semtech ), Gregory Cristian ( Semtech ) and Daniel Jae
 #endif
 #include "LoRaMacTest.h"
 #include "LoRaMacConfirmQueue.h"
-
+log_level_t g_log_level=0x0f;  //liu
 /*!
  * Maximum PHY layer payload size
  */
@@ -1680,7 +1680,6 @@ static void OnTxDelayedTimerEvent( void )
         altDr.datarate = LoRaMacParams.ChannelsDatarate;
 #endif
         LoRaMacParams.ChannelsDatarate = RegionAlternateDr( LoRaMacRegion, &altDr );
-
         macHdr.Value = 0;
         macHdr.Bits.MType = FRAME_TYPE_JOIN_REQ;
 
@@ -2483,6 +2482,7 @@ static LoRaMacStatus_t ScheduleTx( void )
         LoRaMacParams.ChannelsDatarate = LoRaMacParamsDefaults.ChannelsDatarate;
         // Update datarate in the function parameters
         nextChan.Datarate = LoRaMacParams.ChannelsDatarate;
+        printf("NextChanDatarate:%d^^^^^^^^^^^^^^^^^^^^^",nextChan.Datarate);
     }
 
 #ifdef CONFIG_LINKWAN
@@ -2778,7 +2778,7 @@ LoRaMacStatus_t SendFrameOnChannel( uint8_t channel )
     int8_t txPower = 0;
 
     txConfig.Channel = channel;
-    txConfig.Datarate = LoRaMacParams.ChannelsDatarate;
+    txConfig.Datarate =  LoRaMacParams.ChannelsDatarate;
     txConfig.TxPower = LoRaMacParams.ChannelsTxPower;
     txConfig.MaxEirp = LoRaMacParams.MaxEirp;
     txConfig.AntennaGain = LoRaMacParams.AntennaGain;
@@ -3716,7 +3716,7 @@ LoRaMacStatus_t LoRaMacMlmeRequest( MlmeReq_t *mlmeRequest )
             LoRaMacParams.update_freqband = true;
 #endif
             LoRaMacParams.ChannelsDatarate = RegionAlternateDr( LoRaMacRegion, &altDr );
-            LOG_PRINTF(LL_VDEBUG, "MacHdr major:%d rfu:%d mtype:%d\r\n", macHdr.Bits.Major, macHdr.Bits.RFU, macHdr.Bits.MType);
+            LOG_PRINTF(LL_VDEBUG, "MacHdr major:%d rfu:%d mtype:%d dr:%d\r\n", macHdr.Bits.Major, macHdr.Bits.RFU, macHdr.Bits.MType,  LoRaMacParams.ChannelsDatarate);
 
             status = Send( &macHdr, 0, NULL, 0 );
             break;
@@ -3916,7 +3916,6 @@ LoRaMacStatus_t LoRaMacMcpsRequest( McpsReq_t *mcpsRequest )
     // Apply the minimum possible datarate.
     // Some regions have limitations for the minimum datarate.
     datarate = MAX( datarate, phyParam.Value );
-
     if ( readyToSend == true ) {
         if ( AdrCtrlOn == false ) {
             verify.DatarateParams.Datarate = datarate;
