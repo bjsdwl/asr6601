@@ -24,6 +24,7 @@ typedef enum __log_level_t {
     LL_ALL    = 0x0F 
 } log_level_t;
 
+//#define CONFIG_LOG //liu 
 
 #ifdef CONFIG_LOG
 
