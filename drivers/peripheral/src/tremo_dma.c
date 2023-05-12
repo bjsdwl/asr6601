@@ -335,7 +335,7 @@ static void set_dma_mode(dma_dev_t* dma, dma_config_reg_t* config_reg)
  */
 void dma_init(dma_dev_t* dma)
 {
-    uint32_t temp_val           = 0;
+    uint32_t temp_val = 0;
     dma_config_reg_t config_reg = { 0 };
 
     if (dma == NULL) {
